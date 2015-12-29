@@ -7,11 +7,16 @@ var page = require('webpage').create(),
   timeout_t = 10000,
   timeout_id,
   t = 0, 
-  url = "";
+  url = "",
+  errorQueue = [];
 
 if (system.args.length < 3) {
   console.log('Usage: phantomjs detect_url.js <URL> <TARGET> <NUM REQUESTS> <TIMEOUT SEC>');
   phantom.exit();
+}
+
+function printSummary() {
+  console.log('\nTarget requests: ' + requests.length + ', Total: ' + total + ', Errors: ' + errorQueue.length);
 }
 
 page.onResourceRequested = function(request) {
@@ -20,7 +25,7 @@ page.onResourceRequested = function(request) {
     console.log('Request ' + JSON.stringify(request, undefined, 4));
     requests.append(request);
     if (requests.length > num_requests) {
-      console.log('\nTarget requests: ' + requests.length + ', Total: ' + total);
+      printSummary();
       phantom.exit();
     }
   }
@@ -29,6 +34,17 @@ page.onResourceRequested = function(request) {
 //page.onResourceReceived = function(response) {
 //  console.log('Receive ' + JSON.stringify(response, undefined, 4));
 //};
+
+page.onError = function(msg, trace) {
+  var msgStack = ['ERROR: ' + msg];
+  if (trace && trace.length) {
+    msgStack.push('TRACE:');
+    trace.forEach(function(t) {
+      msgStack.push(' -> ' + t.file + ': ' + t.line + (t.function ? ' (in function "' + t.function + '")' : ''));
+    });
+  }
+  errorQueue.append(msgStack);
+};
 
 t = Date.now();
 url = system.args[1];
@@ -49,7 +65,7 @@ page.open(url, function(status) {
   }
 
   timeout_id = setTimeout(function() {
-    console.log('\nTarget requests: ' + requests.length + ', Total: ' + total);
+    printSummary();
     phantom.exit();
   }, timeout_t);
 });
