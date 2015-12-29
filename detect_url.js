@@ -3,11 +3,14 @@ var page = require('webpage').create(),
   total = 0,
   requests = [],
   num_requests = 1,
-  target = '1.1.1.1',
-  t, address;
+  target = "",
+  timeout_t = 10000,
+  timeout_id,
+  t = 0, 
+  url = "";
 
 if (system.args.length < 3) {
-  console.log('Usage: detect_url.js <URL> <TARGET> <NUM REQUESTS>');
+  console.log('Usage: phantomjs detect_url.js <URL> <TARGET> <NUM REQUESTS> <TIMEOUT SEC>');
   phantom.exit();
 }
 
@@ -33,6 +36,9 @@ target = system.args[2];
 if (system.args.length > 3) {
   num_requests = system.args[3];
 }
+if (system.args.length > 4) {
+  timeout_t = parseInt(system.args[4]) * 1000;
+}
 
 page.open(url, function(status) {
   if (status !== 'success') {
@@ -41,6 +47,10 @@ page.open(url, function(status) {
     t = (Date.now() - t)/1000.0;
     console.log('Loading ' + system.args[1] + ', time ' + t + ' s');
   }
-  phantom.exit();
+
+  timeout_id = setTimeout(function() {
+    console.log('\nTarget requests: ' + requests.length + ', Total: ' + total);
+    phantom.exit();
+  }, timeout_t);
 });
 
