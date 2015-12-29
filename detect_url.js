@@ -21,9 +21,11 @@ function printSummary() {
 
 page.onResourceRequested = function(request) {
   total++;
+  console.log('Request ' + JSON.stringify(request.url, undefined, 4));
+
   if (request.url.indexOf(target) > -1) {
-    console.log('Request ' + JSON.stringify(request, undefined, 4));
-    requests.append(request);
+    console.log('Target ' + JSON.stringify(request, undefined, 4));
+    requests.push(request);
     if (requests.length > num_requests) {
       printSummary();
       phantom.exit();
@@ -43,7 +45,7 @@ page.onError = function(msg, trace) {
       msgStack.push(' -> ' + t.file + ': ' + t.line + (t.function ? ' (in function "' + t.function + '")' : ''));
     });
   }
-  errorQueue.append(msgStack);
+  errorQueue.push(msgStack);
 };
 
 t = Date.now();
