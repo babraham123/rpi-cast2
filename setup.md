@@ -1,5 +1,6 @@
 ## Google Chrome headless automation
-Good for ubuntu 14.04 TLS
+Good for ubuntu 14.04 TLS.
+
 Chrome needed for flash support. Other options include chromium, firefox, and phantomjs
 
 Install chrome
@@ -14,7 +15,7 @@ sudo apt-get -f install
 
 Install chrome driver
 ```bash
-sudo apt-get install -f unzip
+sudo apt-get install -y unzip
 wget -N http://chromedriver.storage.googleapis.com/2.20/chromedriver_linux64.zip
 unzip chromedriver_linux64.zip
 chmod +x chromedriver
@@ -25,7 +26,7 @@ sudo ln -s /usr/local/share/chromedriver /usr/bin/chromedriver
 
 Get python packages
 ```bash
-sudo apt-get install -f xvfb python-pip
+sudo apt-get install -y xvfb python-pip
 pip install pyvirtualdisplay selenium
 ```
 
