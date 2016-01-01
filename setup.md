@@ -27,7 +27,7 @@ sudo ln -s /usr/local/share/chromedriver /usr/bin/chromedriver
 Get python packages
 ```bash
 sudo apt-get install -y xvfb python-pip
-pip install pyvirtualdisplay selenium
+sudo pip install pyvirtualdisplay selenium
 ```
 
 Test and begin scrapping
