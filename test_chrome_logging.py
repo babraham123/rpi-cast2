@@ -1,4 +1,4 @@
-// test that chrome loads properly in a headless environment
+# test that console.log can be accessed from the browser
 
 from pyvirtualdisplay import Display
 from selenium import webdriver 
@@ -11,7 +11,7 @@ display.start()
 d = DesiredCapabilities.CHROME
 d['loggingPrefs'] = { 'browser':'ALL' }
 browser = webdriver.Chrome(desired_capabilities=d)
-browser.get('http://www.bereketabraham.com')
+browser.get('http://bereketabraham.com')
 
 print browser.title
 # print messages

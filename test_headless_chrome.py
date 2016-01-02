@@ -1,4 +1,4 @@
-// test that chrome loads properly in a headless environment
+# test that chrome loads properly in a headless environment
 
 from pyvirtualdisplay import Display
 from selenium import webdriver 
